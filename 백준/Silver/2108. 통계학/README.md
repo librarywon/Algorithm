@@ -37,3 +37,4 @@
 
 <p>넷째 줄에는 범위를 출력한다.</p>
 
+input = sys.stdin.readline 필수
