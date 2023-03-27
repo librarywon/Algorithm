@@ -1,6 +1,6 @@
 import sys
 from collections import defaultdict
-input = sys.stdin.readline #이거 때문에 그랬음
+input = sys.stdin.readline #이거 때문에 시간초과 발생
 n =int(input())
 list = []
 D = defaultdict(int)
