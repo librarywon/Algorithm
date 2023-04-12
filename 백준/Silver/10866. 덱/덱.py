@@ -1,52 +1,43 @@
 import sys
-num =int(sys.stdin.readline())
-a=[0]*10000
-cnt=0
-for i in range(num):
-    word = sys.stdin.readline().split()
-    if word[0]=="push_front":
-        for i in range(cnt-1,-1,-1):
-            a[i+1] = a[i]
-        a[0]= int(word[1])
-        cnt +=1
-    if word[0]=="push_back":
-        a[cnt]= int(word[1])
-        cnt +=1
-    if word[0]=="pop_front":
-        if cnt==0:
-            print(-1)
-        elif cnt==1:
-            print(a[0])
-            a[0]==0
-            cnt-=1
+from collections import deque
+input = sys.stdin.readline
+N = int(input())
+Q = deque()
+size =0
+for i in range(N):
+    L = list(input().split())
+    if L[0] == "push_back":
+        Q.append(L[1])
+        size+=1
+    elif L[0] == "push_front":
+        Q.appendleft(L[1])
+        size+=1
+    elif L[0] == "pop_back" :
+        if size !=0:
+            print(Q.pop())
+            size -= 1
         else:
-            print(a[0])
-            for i in range(cnt):
-                if i+1 !=cnt:
-                    a[i] = a[i+1]
-            a[cnt-1]=0
-            cnt-=1
-    if word[0] == "pop_back":
-        if cnt==0:
             print(-1)
+    elif L[0] == "pop_front":
+        if size != 0:
+            print(Q.popleft())
+            size -= 1
         else:
-            print(a[cnt-1])
-            cnt-=1
-            a.pop()
-    if word[0]=="size":
-        print(cnt)
-    if word[0]=="empty":
-        if cnt == 0:
+            print(-1)
+    elif L[0] == "size" :
+        print(size)
+    elif L[0] == "back":
+        if size !=0:
+            print(Q[-1])
+        else:
+            print(-1)
+    elif L[0] == "front":
+        if size !=0:
+            print(Q[0])
+        else:
+            print(-1)
+    elif L[0] == "empty":
+        if size == 0 :
             print(1)
         else:
             print(0)
-    if word[0] == "front":
-        if cnt==0:
-            print(-1)
-        else:
-            print(a[0])
-    if word[0] == "back":
-        if cnt==0:
-            print(-1)
-        else:
-            print(a[cnt-1])
