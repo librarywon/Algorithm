@@ -1,4 +1,3 @@
-
 // boj_2512_예산
 
 fun calcBudget(mid : Int,n : Int,arr : List<Int>) : Int {
@@ -20,7 +19,7 @@ fun main() {
 
     var left : Int = 0
     var right = arr[n-1]
-    var max = arr[0]
+    var max = 0
 
     if (arr.sum() < total) {
         println(arr.max())
