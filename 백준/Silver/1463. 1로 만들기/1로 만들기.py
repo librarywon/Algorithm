@@ -12,16 +12,12 @@ D[2] = 1
 D[3] = 1
 
 for i in range(4,N+1):
-    
-    m = 999999999
-    
+    D[i] = D[i-1]+1 
     if i%2 == 0:
-        m = min(m,D[i/2])
+        D[i] = min(D[i],D[i/2]+1)
         
     if i%3 == 0 :
-        m = min(m,D[i/3])        
-    
-    D[i] = min(m,D[i-1]) + 1
-    
+        D[i] = min(D[i],D[i/3]+1)
+
 print(D[N])
 
