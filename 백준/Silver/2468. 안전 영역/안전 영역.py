@@ -2,15 +2,11 @@ import sys
 input = sys.stdin.readline
 from collections import deque
 
-
 max = 1
 
 def bfs(starti,startj,height):
     
-    if visited[starti][startj] or graph[starti][startj]< height :
-        return 0
-    
-    Q = deque() # 큐
+    Q = deque() 
     Q.append((starti,startj))
     visited[starti][startj] = True
     
@@ -42,7 +38,7 @@ for i in range(1,101):
     cnt = 0
     for j in range(0,N):
         for k in range(0,N):
-            if graph[j][k] > i :
+            if graph[j][k] > i and not visited[j][k] :
                 cnt += bfs(j,k,i)
     if max < cnt :
         max = cnt
