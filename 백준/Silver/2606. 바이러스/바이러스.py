@@ -1,30 +1,30 @@
 import sys
-from collections import deque
-def bfs(start):
-    cnt=0
-    Q = deque()
-    Q.append(start)
-    visited[start] = True
-    while Q :
-        node=Q.popleft()
-        visited[node]=True
-        for d in graph[node] :
-            if not visited[d]:
-                visited[d] = True
-                cnt+=1
-                Q.append(d)
-    return cnt
 input = sys.stdin.readline
+
+def dfs(node):
+    visited[node] = True
+    
+    for d in graph[node]:
+        if not visited[d]:
+            dfs(d)
 
 V = int(input())
 E = int(input())
+
+visited = [False for x in range(V+1)]
 graph = [ [] for x in range(V+1)]
 
-for i in range(E):
+
+for x in range(E):
     a,b = map(int,input().split())
     graph[a].append(b)
     graph[b].append(a)
 
-visited = [False for x in range(V+1)]
-cnt=0
-print(bfs(1))
+dfs(1)
+
+cnt = 0
+
+for i in visited:
+    if i is True:
+        cnt += 1
+print(cnt-1)
