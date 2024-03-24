@@ -7,7 +7,7 @@ int main(){
     fast_io
     string s; cin >> s;
     long long cnt=0;
-    
+
     for (int i = 1; i <s.length(); i++) {
         if(s[i]!=s[i-1]) cnt++;
     }
