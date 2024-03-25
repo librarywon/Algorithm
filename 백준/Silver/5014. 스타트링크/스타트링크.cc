@@ -29,7 +29,7 @@ void bfs() {
             }
             q.pop();
             for(int go: elv){
-                if(!visited[curr+go] && curr+go >0 && curr+go<=F) {
+                if(curr+go >0 && curr+go<=F && !visited[curr+go]) {
                     visited[curr+go] = true;
                     q.push(curr+go);
                 }
@@ -37,9 +37,7 @@ void bfs() {
         }
         level++;
     }
-
     cout << "use the stairs";
-
 }
 
 int main(){
