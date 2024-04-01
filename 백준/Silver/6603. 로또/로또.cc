@@ -15,7 +15,6 @@ int main(){
 
         vector<int> a(n);
         for(int i=0;i<n;i++) cin >> a[i];
-        sort(a.begin(),a.end());
 
         vector<int> comb(n, 0);
         fill(comb.begin(), comb.begin() + 6, 1);
