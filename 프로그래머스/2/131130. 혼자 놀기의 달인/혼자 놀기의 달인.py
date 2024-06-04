@@ -1,23 +1,18 @@
 def solution(cards):
     answer = 0
-    n = len(cards)
-    v = [0] * n
-    box = []
-    for i in range(n):
-        p = i
-        cnt = 0
-        if v[i] == 0:
-            while 1:
-                if v[p] == 1:
-                    box.append(cnt)
-                    break
-                else:
-                    cnt +=1
-                    v[p] = 1
-                    p=cards[p]-1
-    box = sorted(box,reverse=True)
+    same = 0
+    for i in range(0,len(cards)):
+        if(cards[i]== i+1):
+            same +=1
+            
+    r = len(cards)-same
     
-    if len(box) <=1 :
-        return 0
+    if r%2==0:
+        answer = int(r/2) ** 2
     else:
-        return box[0]*box[1]
+        answer = int(r/2) * (int(r/2)+1)
+        
+    if r==0 :
+        answer = 1
+    
+    return answer
