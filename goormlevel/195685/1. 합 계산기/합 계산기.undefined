@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+# UTF-8 encoding when using korean
+
+n = int(input())
+nsum =0 
+for i in range(n):
+	n1, s, n2 = input().split()
+	n1 = int(n1)
+	n2 = int(n2)
+	
+	if(s=='+'):
+		nsum += n1 + n2
+	elif(s=='/'):
+		nsum += n1 // n2
+	elif(s=='-'):
+		nsum += n1 - n2
+	elif(s=='*'):
+		nsum += n1 * n2
+print(nsum)
