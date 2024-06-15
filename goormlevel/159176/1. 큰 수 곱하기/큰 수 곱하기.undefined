@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+# UTF-8 encoding when using korean
+data = list(map(int,input().split()))
+sum= 1
+for x in data:
+	sum *= x
+print(sum)
