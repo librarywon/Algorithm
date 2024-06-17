@@ -33,7 +33,7 @@ for l in call:
             cro[0] -= 1
             row[r] -= 1
             col[c] -= 1
-        elif (r == 0 and c== 4) or (r == 1 and c== 3) or (r == 3 and c== 1) or (r == 4 and c== 0):
+        elif r+c == 4:
             cro[1] -=1
             row[r] -= 1
             col[c] -= 1
