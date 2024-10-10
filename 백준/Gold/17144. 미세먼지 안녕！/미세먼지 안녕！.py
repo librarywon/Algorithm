@@ -1,109 +1,81 @@
-import math
-from sys import stdin
 from collections import deque
-import copy
 
-def m_print(m):
+R, C, T = map(int, input().split())
+m = [list(map(int, input().split())) for _ in range(R)]
 
-    for i in range(R):
-        for j in range(C):
-            print(m[i][j],'',end='')
-        print()
-
-input = stdin.readline
-
-R, C, T = map(int,input().split())
-
-m = [list(map(int,input().split())) for _ in range(R)]
-
-dusts = []
-air = []
-
+# 공기청정기 위치 찾기
+air_cleaner = []
 for i in range(R):
-    for j in range(C):
-        if m[i][j]>0:
-            dusts.append([i,j,m[i][j]])
-        if m[i][j]==-1:
-            air.append(i)
+    if m[i][0] == -1:
+        air_cleaner.append(i)
 
-di = [0,0,1,-1]
-dj = [1,-1,0,0]
+# 동, 서, 남, 북
+dy = [0, 0, 1, -1]
+dx = [1, -1, 0, 0]
 
-for i in range(T):
-
-    for dust in dusts:
-        dusti, dustj, dustv = dust
-        cnt = 0
-        for k in range(4):
-            ni = dusti+di[k]
-            nj = dustj+dj[k]
-
-            if ni <0 or ni > R-1 or nj < 0 or nj > C-1 or m[ni][nj] == -1:
-                continue
-
-            m[ni][nj] += math.floor(dustv/5)
-            cnt+=1
-
-        m[dusti][dustj] -= (math.floor(dustv/5)*cnt)
-
-
-    tQ = deque()
-    tQ.append(0)
-
-    tdj = [1,0,-1,0]
-    tdi = [0,-1,0,1]
-    td = 0
-
-    tairi = air[0]
-    curi,curj = tairi,1
-    while tairi != curi or curj != 0:
-        tQ.append(m[curi][curj])
-        m[curi][curj] = tQ.popleft()
-
-        curi = curi + tdi[td]
-        curj = curj + tdj[td]
-
-        if curj == C-1 and td ==0:
-            td+=1
-        elif curi == 0 and td == 1:
-            td+=1
-        elif curj == 0 and td == 2:
-            td+=1
-
-    bairi = air[1]
-    curi, curj = bairi,1
-    bdj = [1, 0, -1, 0]
-    bdi = [0, 1, 0, -1]
-    bd = 0
-
-    bQ = deque()
-    bQ.append(0)
-
-
-
-    while bairi != curi or curj != 0:
-        bQ.append(m[curi][curj])
-        m[curi][curj] = bQ.popleft()
-
-        curi = curi + bdi[bd]
-        curj = curj + bdj[bd]
-
-        if curj == C - 1 and bd == 0:
-            bd += 1
-        elif curi == R - 1 and bd == 1:
-            bd += 1
-        elif curj == 0 and bd == 2:
-            bd += 1
-
-    dusts = []
-
+# 미세먼지 확산 처리
+def spread_dust():
+    new_m = [[0] * C for _ in range(R)]
     for i in range(R):
         for j in range(C):
             if m[i][j] > 0:
-                dusts.append([i, j, m[i][j]])
+                spread_amount = m[i][j] // 5
+                spread_count = 0
+                for direction in range(4):
+                    ny, nx = i + dy[direction], j + dx[direction]
+                    if 0 <= ny < R and 0 <= nx < C and m[ny][nx] != -1:
+                        new_m[ny][nx] += spread_amount
+                        spread_count += 1
+                new_m[i][j] += m[i][j] - spread_amount * spread_count
+            elif m[i][j] == -1:
+                new_m[i][j] = -1
+    return new_m
 
+# 공기청정기의 위쪽 바람 (반시계 방향)
+def circulate_up():
+    top = air_cleaner[0]
+    # 왼쪽 세로
+    for i in range(top - 1, 0, -1):
+        m[i][0] = m[i - 1][0]
+    # 위쪽 가로
+    for i in range(C - 1):
+        m[0][i] = m[0][i + 1]
+    # 오른쪽 세로
+    for i in range(top):
+        m[i][C - 1] = m[i + 1][C - 1]
+    # 아래쪽 가로
+    for i in range(C - 1, 1, -1):
+        m[top][i] = m[top][i - 1]
+    m[top][1] = 0  # 공기청정기에서 나온 바람은 미세먼지가 없다
+
+# 공기청정기의 아래쪽 바람 (시계 방향)
+def circulate_down():
+    bottom = air_cleaner[1]
+    # 왼쪽 세로
+    for i in range(bottom + 1, R - 1):
+        m[i][0] = m[i + 1][0]
+    # 아래쪽 가로
+    for i in range(C - 1):
+        m[R - 1][i] = m[R - 1][i + 1]
+    # 오른쪽 세로
+    for i in range(R - 1, bottom, -1):
+        m[i][C - 1] = m[i - 1][C - 1]
+    # 위쪽 가로
+    for i in range(C - 1, 1, -1):
+        m[bottom][i] = m[bottom][i - 1]
+    m[bottom][1] = 0  # 공기청정기에서 나온 바람은 미세먼지가 없다
+
+# 시뮬레이션 실행
+for _ in range(T):
+    m = spread_dust()  # 미세먼지 확산
+    circulate_up()     # 위쪽 공기청정기 작동
+    circulate_down()   # 아래쪽 공기청정기 작동
+
+# T초가 지난 후 남아있는 미세먼지의 양 계산
 answer = 0
-for dust in dusts:
-    answer += dust[2]
+for i in range(R):
+    for j in range(C):
+        if m[i][j] > 0:
+            answer += m[i][j]
 
 print(answer)
